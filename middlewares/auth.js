@@ -8,7 +8,7 @@ class Auth {
   get check() {
     return async (ctx, next) => {
       // token 检测
-      const userToken = (ctx.req.headers && ctx.req.headers?.token) || "";
+      const userToken = (ctx.req.headers && ctx.req.headers.token) || "";
       let errMsg = "token不合法";
       if (!userToken) {
         throw new Forbbiden(errMsg);
