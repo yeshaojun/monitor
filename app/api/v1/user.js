@@ -28,8 +28,6 @@ router.post("/register", async (ctx) => {
 
 router.post("/login", async (ctx) => {
   const v = await new LoginValidate().validate(ctx);
-  console.log("v");
-  throw Error("234");
   const user = await User.verifyEmailPassword(
     v.get("body.email"),
     v.get("body.password")
