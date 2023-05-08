@@ -63,6 +63,28 @@ class CheckScreenValidate extends LinValidator {
   }
 }
 
+class MapFileValidate extends LinValidator {
+  constructor() {
+    super();
+    this.fileName = new Rule("isLength", "不允许为空", { min: 1 });
+    this.apikey = [new Rule("isLength", "项目id为24位", { min: 24, max: 24 })];
+  }
+}
+
+class CheckProjectIDValidate extends LinValidator {
+  constructor() {
+    super();
+    this.validateType = checkId;
+  }
+}
+
+function checkId(vals) {
+  const id = vals.body.id || vals.path.id || vals.query.id;
+  if (!id) {
+    throw new Error("id是必传的");
+  }
+}
+
 module.exports = {
   RegisterValidate,
   LoginValidate,
@@ -70,4 +92,6 @@ module.exports = {
   ProjectValidate,
   ErrorListValidate,
   CheckScreenValidate,
+  CheckProjectIDValidate,
+  MapFileValidate,
 };

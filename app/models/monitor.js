@@ -43,7 +43,11 @@ const MonitorScheme = new mongoose.Schema(
     line: Number,
     message: String,
     recordScreenId: String,
-    events: Buffer,
+    events: String,
+    dealStatus: {
+      type: Number,
+      default: 0,
+    }, // 未处理为0；已处理为1
   },
   {
     timestamps: {
