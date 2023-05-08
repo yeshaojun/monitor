@@ -23,4 +23,4 @@ app.use(koaStatic(path.join(__dirname, "./static")));
 // 初始化路由
 InitManager.initCore(app);
 
-app.listen(9000);
+app.listen(9500);
