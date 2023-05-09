@@ -14,7 +14,7 @@ const {
   CheckScreenValidate,
   MapFileValidate,
 } = require("../../validators/validator.js");
-const { Success } = require("../../../core/httpException");
+const { Success, ParameterException } = require("../../../core/httpException");
 const Monitor = require("../../models/monitor");
 const Project = require("../../models/project");
 router.post("/report", async (ctx) => {
@@ -72,13 +72,8 @@ router.get("/map", new Auth().check, async (ctx) => {
       const result = fs.readFileSync(path.resolve(fileDir, list));
       ctx.body = result;
     } else {
-      ctx.body = {
-        code: 0,
-        data: "",
-        msg: "未匹配到文件",
-      };
+      throw new ParameterException("未匹配到文件");
     }
-    // console.log("yes map", list, filename);
   }
 });
 

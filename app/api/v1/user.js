@@ -10,20 +10,26 @@ const {
   RegisterValidate,
   LoginValidate,
 } = require("../../validators/validator.js");
-const { Success } = require("../../../core/httpException");
+const { Success, ParameterException } = require("../../../core/httpException");
 const User = require("../../models/user.js");
 // 注册 新增数据
 router.post("/register", async (ctx) => {
   const v = await new RegisterValidate().validate(ctx);
-  // 密码需要加密，放在模型中统一处理
-  const user = {
-    nickname: v.get("body.nickname"),
+  const user = await User.findOne({
     email: v.get("body.email"),
-    password: v.get("body.password1"),
-  };
-  console.log(user);
-  await User.create(user);
-  throw new Success();
+  });
+  if (!user) {
+    // 密码需要加密，放在模型中统一处理
+    const user = {
+      nickname: v.get("body.nickname"),
+      email: v.get("body.email"),
+      password: v.get("body.password1"),
+    };
+    await User.create(user);
+    throw new Success();
+  } else {
+    throw new ParameterException("该邮箱已注册！");
+  }
 });
 
 router.post("/login", async (ctx) => {
