@@ -1,4 +1,5 @@
 const Router = require("koa-router");
+const coBody = require("co-body");
 const path = require("path");
 const { sendEmail } = require("../../../core/utils");
 const pathExists = require("path-exists");
@@ -19,19 +20,25 @@ const Monitor = require("../../models/monitor");
 const Project = require("../../models/project");
 router.post("/report", async (ctx) => {
   const v = await new ReportValidate().validate(ctx);
-  await Monitor.verifyApiKey(v.get("body.apikey"));
-  await Monitor.create(v.get("body"));
-  if (v.get("body.status") === "error") {
+  let body = v.get("body");
+  // 兼容Navigator.sendBeacon 无阻塞发送统计数据
+  // 需要使用co-body处理
+  if (Object.keys(body).length === 0) {
+    body = await coBody.json(ctx.req);
+  }
+  const { apikey, status, type, name, message } = body;
+  if (!apikey || apikey.length !== 24) {
+    throw new ParameterException("apikey格式不正确");
+  }
+  await Monitor.verifyApiKey(apikey);
+  await Monitor.create(body);
+  if (status === "error") {
     const user = await Project.findOne({
-      _id: v.get("body.apikey"),
+      _id: apikey,
     }).populate("userId", {
       email: 1,
     });
-    sendEmail(
-      user.userId.get("email"),
-      v.get("body.type") + v.get("body.name"),
-      v.get("body.message")
-    );
+    sendEmail(user.userId.get("email"), type + name, message);
   }
   throw new Success();
 });

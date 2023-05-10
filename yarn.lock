@@ -850,6 +850,11 @@
   resolved "https://registry.npmjs.org/@types/node/-/node-18.6.4.tgz"
   integrity sha512-I4BD3L+6AWiUobfxZ49DlU43gtI+FTHSv9pE2Zekg6KjMpre4ByusaljW3vYSLJrvQ1ck1hUaeVu8HVlY3vzHg==
 
+"@types/ua-parser-js@^0.7.36":
+  version "0.7.36"
+  resolved "https://registry.yarnpkg.com/@types/ua-parser-js/-/ua-parser-js-0.7.36.tgz#9bd0b47f26b5a3151be21ba4ce9f5fa457c5f190"
+  integrity sha512-N1rW+njavs70y2cApeIw1vLMYXRwfBy+7trgavGuuTfOd7j1Yh7QTRc/yqsPl6ncokt72ZXuxEU0PiCp9bSwNQ==
+
 "@types/validator@^13.7.1":
   version "13.7.5"
   resolved "https://registry.npmjs.org/@types/validator/-/validator-13.7.5.tgz"
@@ -867,6 +872,38 @@
   dependencies:
     "@types/node" "*"
     "@types/webidl-conversions" "*"
+
+"@websee/common@4.0.2":
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/@websee/common/-/common-4.0.2.tgz#ce18dd45619043ef7af3e583bda9f68d7b2661ba"
+  integrity sha512-iZ4PH6QvxwpuRvtw7stofIrEWYx2TqkUf8yF+TdVhEDYKBd8kfROAdaAgLmwBa8hHW7X5YSjfpHiEH+LF2CkYg==
+
+"@websee/core@4.0.2", "@websee/core@^4.0.2":
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/@websee/core/-/core-4.0.2.tgz#3f81614543981e84eff17376890715d7f964369a"
+  integrity sha512-PRT29DixDTnjiZkQgLR6KtGSWzietFhe8szci667K9JI6aEYbDA/TRwQW7LnZMlAzoRz8tSOTN1nkM1tXocrUg==
+  dependencies:
+    "@websee/common" "4.0.2"
+    "@websee/types" "4.0.2"
+    "@websee/utils" "4.0.2"
+
+"@websee/types@4.0.2":
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/@websee/types/-/types-4.0.2.tgz#6315c5df5eb61318bf5365bacfb787cf3d7e8224"
+  integrity sha512-zJsG+3dajYDskmxo0XTx1tB7Pvu/3qXU6gXwJxBVKrwtlQzYaAMTIExyqQhIK6zi8AulTyZieYWYKdph5yG9gg==
+  dependencies:
+    "@websee/common" "4.0.2"
+
+"@websee/utils@4.0.2":
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/@websee/utils/-/utils-4.0.2.tgz#d2fbb994dbdae7496d172f7eba28c2bdc5734932"
+  integrity sha512-Br+hCF2uyFmlfPKvjrKB/Ul0FaeM/8UdEZTsmeF4CBa8MtwGf4MXia9brlVVHoZAg1co6/OVqsGlvbibdKuAVQ==
+  dependencies:
+    "@types/ua-parser-js" "^0.7.36"
+    "@websee/common" "4.0.2"
+    "@websee/core" "4.0.2"
+    "@websee/types" "4.0.2"
+    ua-parser-js "1.0.32"
 
 abbrev@1:
   version "1.1.1"
@@ -1131,6 +1168,16 @@ cli-tableau@^2.0.0:
 co-body@^6.0.0:
   version "6.1.0"
   resolved "https://registry.npmjs.org/co-body/-/co-body-6.1.0.tgz"
+  integrity sha512-m7pOT6CdLN7FuXUcpuz/8lfQ/L77x8SchHCF4G0RBTJO20Wzmhn5Sp4/5WsKy8OSpifBSUrmg83qEqaDHdyFuQ==
+  dependencies:
+    inflation "^2.0.0"
+    qs "^6.5.2"
+    raw-body "^2.3.3"
+    type-is "^1.6.16"
+
+co-body@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/co-body/-/co-body-6.1.0.tgz#d87a8efc3564f9bfe3aced8ef5cd04c7a8766547"
   integrity sha512-m7pOT6CdLN7FuXUcpuz/8lfQ/L77x8SchHCF4G0RBTJO20Wzmhn5Sp4/5WsKy8OSpifBSUrmg83qEqaDHdyFuQ==
   dependencies:
     inflation "^2.0.0"
@@ -2971,6 +3018,11 @@ type-is@^1.6.16:
   dependencies:
     media-typer "0.3.0"
     mime-types "~2.1.24"
+
+ua-parser-js@1.0.32:
+  version "1.0.32"
+  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-1.0.32.tgz#786bf17df97de159d5b1c9d5e8e9e89806f8a030"
+  integrity sha512-dXVsz3M4j+5tTiovFVyVqssXBu5HM47//YSOeZ9fQkdDKkfzv2v3PP1jmH6FUyPW+yCSn7aBVK1fGGKNhowdDA==
 
 undefsafe@^2.0.5:
   version "2.0.5"

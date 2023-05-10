@@ -14,8 +14,8 @@ app.use(
   })
 );
 
-// 全局异常处理
-app.use(catchError);
+app // 全局异常处理
+  .use(catchError);
 // 获取body数据
 app.use(parser());
 // 设置静态目录

@@ -47,12 +47,7 @@ class ErrorListValidate extends LinValidator {
   }
 }
 
-class ReportValidate extends LinValidator {
-  constructor() {
-    super();
-    this.apikey = [new Rule("isLength", "项目id为24位", { min: 24, max: 24 })];
-  }
-}
+class ReportValidate extends LinValidator {}
 
 class ProjectValidate extends LinValidator {}
 

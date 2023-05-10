@@ -18,6 +18,7 @@ router.post("/register", async (ctx) => {
   const user = await User.findOne({
     email: v.get("body.email"),
   });
+  console.log("user", user);
   if (!user) {
     // 密码需要加密，放在模型中统一处理
     const user = {

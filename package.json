@@ -18,7 +18,9 @@
   },
   "homepage": "https://github.com/yeshaojun/koa-service-template#readme",
   "dependencies": {
+    "@websee/core": "^4.0.2",
     "bcrypt": "^5.0.1",
+    "co-body": "^6.1.0",
     "fs-extra": "^11.1.1",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.4",

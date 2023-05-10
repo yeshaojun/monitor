@@ -10,7 +10,6 @@ class HttpException extends Error {
 // 参数异常
 class ParameterException extends HttpException {
   constructor(msg, errorCode) {
-    console.log("ParameterException");
     super();
     this.code = 400;
     this.msg = msg || "参数错误";
