@@ -2,7 +2,7 @@ module.exports = {
   environment: "development",
   database: {
     dbName: "monitor",
-    host: "127.0.0.1",
+    host: "localhost",
     port: 27017,
     user: "",
     password: "",

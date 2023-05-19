@@ -33,12 +33,14 @@ router.post("/report", async (ctx) => {
   await Monitor.verifyApiKey(apikey);
   await Monitor.create(body);
   if (status === "error") {
-    const user = await Project.findOne({
+    const p = await Project.findOne({
       _id: apikey,
-    }).populate("userId", {
+    }).populate("member", {
       email: 1,
     });
-    sendEmail(user.userId.get("email"), type + name, message);
+    p.member.forEach((user) => {
+      sendEmail(element._id, type + name, message);
+    });
   }
   throw new Success();
 });
@@ -90,7 +92,11 @@ router.get("/screen", new Auth().check, async (ctx) => {
     recordScreenId: v.get("query.screenId"),
     type: "recordScreen",
   });
-  ctx.body = screen;
+  if (screen) {
+    ctx.body = screen;
+  } else {
+    throw new ParameterException("未匹配到录屏文件");
+  }
 });
 
 module.exports = router;

@@ -14,20 +14,32 @@ const { Success } = require("../../../core/httpException");
 const Project = require("../../models/project");
 
 router.post("/create", new Auth().check, async (ctx) => {
-  console.log("create", ctx);
+  // console.log("create", ctx);
   const v = await new ProjectValidate().validate(ctx);
   const project = {
     name: v.get("body.name"),
     desc: v.get("body.desc"),
     userId: ctx.auth.uid,
+    member: [ctx.auth.uid],
   };
   await Project.create(project);
   throw new Success();
 });
 
 router.get("/list", new Auth().check, async (ctx) => {
-  const project = await Project.find();
-  ctx.body = project;
+  const project = await Project.find({
+    member: ctx.auth.uid,
+  }).populate("member", {
+    nickname: 1,
+  });
+  const checkProject = project.map((_) => {
+    return {
+      ..._.toObject(),
+      isCreated: _.toObject().userId.toString() === ctx.auth.uid,
+    };
+  });
+
+  ctx.body = checkProject;
 });
 
 router.delete("/:id", new Auth().check, async (ctx) => {
@@ -35,6 +47,23 @@ router.delete("/:id", new Auth().check, async (ctx) => {
   await Project.deleteOne({
     _id: v.get("path.id"),
   });
+  throw new Success();
+});
+
+router.put("/member", new Auth().check, async (ctx) => {
+  const v = await new CheckProjectIDValidate().validate(ctx);
+  const member = v.get("body.users");
+  member.push(ctx.auth.uid);
+  await Project.findOneAndUpdate(
+    {
+      _id: v.get("body.id"),
+    },
+    {
+      $set: {
+        member: member,
+      },
+    }
+  );
   throw new Success();
 });
 
