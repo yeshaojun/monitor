@@ -39,7 +39,7 @@ router.post("/report", async (ctx) => {
       email: 1,
     });
     p.member.forEach((user) => {
-      sendEmail(element._id, type + name, message);
+      sendEmail(user._id, type + name, message);
     });
   }
   throw new Success();

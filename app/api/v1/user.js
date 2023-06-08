@@ -42,7 +42,6 @@ router.post("/register", async (ctx) => {
 
 router.post("/login", async (ctx) => {
   const v = await new LoginValidate().validate(ctx);
-  console.log("user", v.get("body"));
   const user = await User.verifyEmailPassword(
     v.get("body.email"),
     v.get("body.password")
