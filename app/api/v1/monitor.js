@@ -76,7 +76,7 @@ router.get("/map", new Auth().check, async (ctx) => {
   if (pathExists(fileDir)) {
     const reg = new RegExp(`${filename}\.map`);
     const list = fs.readdirSync(fileDir).find((item) => reg.test(item));
-    console.log("list", list);
+    // console.log("list", list);
     if (list) {
       const result = fs.readFileSync(path.resolve(fileDir, list));
       ctx.body = result;
