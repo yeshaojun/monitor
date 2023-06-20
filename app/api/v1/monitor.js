@@ -32,7 +32,10 @@ router.post("/report", async (ctx) => {
   }
   await Monitor.verifyApiKey(apikey);
   await Monitor.create(body);
-  if (status === "error") {
+  if (status === "error" && type !== "resource") {
+    if (type === "xhr" && body?.dealStatus === 0) {
+      return;
+    }
     const p = await Project.findOne({
       _id: apikey,
     }).populate("member", {
