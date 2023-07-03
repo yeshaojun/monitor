@@ -5,6 +5,7 @@ const { sendEmail } = require("../../../core/utils");
 const pathExists = require("path-exists");
 const fs = require("fs-extra");
 const { Auth } = require("../../../middlewares/auth");
+const dayjs = require("dayjs");
 const router = new Router({
   prefix: "/v1/monitor",
 });
@@ -42,7 +43,17 @@ router.post("/report", async (ctx) => {
       email: 1,
     });
     p.member.forEach((user) => {
-      sendEmail(user.email, type + name, message);
+      sendEmail(
+        user.email,
+        type + name,
+        `
+        时间： ${dayjs.format(body.time).format("YYYY-MM-DD HH:mm:ss")}
+        报错类型： ${type}
+        报错用户： ${body.userId}
+        报错项目： ${name}
+        报错内容： ${message}
+      `
+      );
     });
   }
   throw new Success();
@@ -50,10 +61,21 @@ router.post("/report", async (ctx) => {
 
 router.get("/list", new Auth().check, async (ctx) => {
   const v = await new ErrorListValidate().validate(ctx);
-  const { projectId, current, pageSize } = v.get("query");
+  const { projectId, current, pageSize, name, date } = v.get("query");
+  let endTime = dayjs().endOf("day");
+  let startTime = dayjs().subtract(1, "month").startOf("day");
+  if (date) {
+    endTime = dayjs(date.split(",")[1]).endOf("day");
+    startTime = dayjs(date.split(",")[0]).startOf("day");
+  }
   const lists = await Monitor.find({
     apikey: projectId,
     status: "error",
+    userId: {
+      $regex: name,
+      $options: "i",
+    },
+    created_at: { $gte: startTime, $lte: endTime },
   })
     .sort({
       created_at: -1,
