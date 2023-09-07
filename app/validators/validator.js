@@ -73,9 +73,23 @@ class CheckProjectIDValidate extends LinValidator {
   }
 }
 
+class CheckErrorIDsValidate extends LinValidator {
+  constructor() {
+    super();
+    this.validateType = checkIds;
+  }
+}
+
 function checkId(vals) {
   const id = vals.body.id || vals.path.id || vals.query.id;
   if (!id) {
+    throw new Error("id是必传的");
+  }
+}
+
+function checkIds(vals) {
+  const ids = vals.body.ids || vals.path.ids || vals.query.ids;
+  if (!ids) {
     throw new Error("id是必传的");
   }
 }
@@ -89,4 +103,5 @@ module.exports = {
   CheckScreenValidate,
   CheckProjectIDValidate,
   MapFileValidate,
+  CheckErrorIDsValidate,
 };

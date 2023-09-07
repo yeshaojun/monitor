@@ -15,6 +15,7 @@ const {
   ErrorListValidate,
   CheckScreenValidate,
   MapFileValidate,
+  CheckErrorIDsValidate,
 } = require("../../validators/validator.js");
 const { Success, ParameterException } = require("../../../core/httpException");
 const Monitor = require("../../models/monitor");
@@ -62,6 +63,7 @@ router.post("/report", async (ctx) => {
 router.get("/list", new Auth().check, async (ctx) => {
   const v = await new ErrorListValidate().validate(ctx);
   const { projectId, current, pageSize, name, date } = v.get("query");
+  console.log("projectId", projectId);
   let endTime = dayjs().endOf("day");
   let startTime = dayjs().subtract(1, "month").startOf("day");
   if (date) {
@@ -121,6 +123,18 @@ router.get("/screen", new Auth().check, async (ctx) => {
     ctx.body = screen;
   } else {
     throw new ParameterException("未匹配到录屏文件");
+  }
+});
+
+router.delete("/delete", new Auth().check, async (ctx) => {
+  const v = await new CheckErrorIDsValidate().validate(ctx);
+  try {
+    await Monitor.deleteMany({
+      _id: { $in: v.get("query.ids").split(",") },
+    });
+    throw new Success();
+  } catch (error) {
+    ctx.body = "删除异常" + error.message;
   }
 });
 

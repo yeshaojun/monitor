@@ -12,6 +12,7 @@ const {
 } = require("../../validators/validator.js");
 const { Success } = require("../../../core/httpException");
 const Project = require("../../models/project");
+const Monitor = require("../../models/monitor");
 
 router.post("/create", new Auth().check, async (ctx) => {
   // console.log("create", ctx);
@@ -46,6 +47,9 @@ router.delete("/:id", new Auth().check, async (ctx) => {
   const v = await new CheckProjectIDValidate().validate(ctx);
   await Project.deleteOne({
     _id: v.get("path.id"),
+  });
+  await Monitor.deleteMany({
+    apikey: v.get("path.id"),
   });
   throw new Success();
 });
