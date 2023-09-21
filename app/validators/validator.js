@@ -104,4 +104,5 @@ module.exports = {
   CheckProjectIDValidate,
   MapFileValidate,
   CheckErrorIDsValidate,
+  LinValidator,
 };

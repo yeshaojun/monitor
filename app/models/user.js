@@ -19,6 +19,11 @@ const UserScheme = new mongoose.Schema(
       type: Number,
       default: 10,
     },
+    // js==> error  promise ==> unhandledrejection 接口===》 xhr ｜ fetch 资源 ===》 resource
+    noticeAuth: {
+      type: Array,
+      default: ["js", "api"],
+    },
   },
   {
     timestamps: {

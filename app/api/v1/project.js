@@ -71,4 +71,16 @@ router.put("/member", new Auth().check, async (ctx) => {
   throw new Success();
 });
 
+router.put("/exit", new Auth().check, async (ctx) => {
+  const v = await new CheckProjectIDValidate().validate(ctx);
+  console.log("member", ctx.auth.uid);
+  await Project.update(
+    {
+      _id: v.get("query.id"),
+    },
+    { $pull: { member: ctx.auth.uid } }
+  );
+  throw new Success();
+});
+
 module.exports = router;

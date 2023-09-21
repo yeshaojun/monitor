@@ -20,6 +20,7 @@ const {
 const { Success, ParameterException } = require("../../../core/httpException");
 const Monitor = require("../../models/monitor");
 const Project = require("../../models/project");
+const { NOTICEAUTH } = require("../../../config/dict");
 router.post("/report", async (ctx) => {
   const v = await new ReportValidate().validate(ctx);
   let body = v.get("body");
@@ -34,27 +35,34 @@ router.post("/report", async (ctx) => {
   }
   await Monitor.verifyApiKey(apikey);
   await Monitor.create(body);
-  if (status === "error" && type !== "resource") {
-    if (type === "xhr" && body?.dealStatus === 0) {
-      return;
-    }
+  if (status === "error") {
     const p = await Project.findOne({
       _id: apikey,
     }).populate("member", {
       email: 1,
+      noticeAuth: 1,
     });
     p.member.forEach((user) => {
-      sendEmail(
-        user.email,
-        type + name,
+      // 获取用户通知配置
+      const auth = user.noticeAuth;
+      let list = [];
+      auth.forEach((_) => {
+        list.push(...NOTICEAUTH[_]);
+      });
+      console.log("auth", list);
+      if (list.indexOf(type) !== -1) {
+        sendEmail(
+          user.email,
+          type + name,
+          `
+          时间： ${dayjs(body.time).format("YYYY-MM-DD HH:mm:ss")}
+          报错类型： ${type}
+          报错用户： ${body.userId}
+          报错项目： ${name}
+          报错内容： ${message}
         `
-        时间： ${dayjs.format(body.time).format("YYYY-MM-DD HH:mm:ss")}
-        报错类型： ${type}
-        报错用户： ${body.userId}
-        报错项目： ${name}
-        报错内容： ${message}
-      `
-      );
+        );
+      }
     });
   }
   throw new Success();

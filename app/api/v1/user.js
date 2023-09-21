@@ -9,6 +9,7 @@ const router = new Router({
 const {
   RegisterValidate,
   LoginValidate,
+  LinValidator,
 } = require("../../validators/validator.js");
 const { Success, ParameterException } = require("../../../core/httpException");
 const User = require("../../models/user.js");
@@ -56,7 +57,7 @@ router.get("/info", new Auth().check, async (ctx) => {
     {
       _id: ctx.auth.uid,
     },
-    ["_id", "email", "nickname"]
+    ["_id", "email", "nickname", "noticeAuth"]
   );
   ctx.body = user;
 });
@@ -71,6 +72,28 @@ router.get("/list", new Auth().check, async (ctx) => {
     ["_id", "email", "nickname"]
   );
   ctx.body = user;
+});
+
+router.put("/auth", new Auth().check, async (ctx) => {
+  const v = await new LinValidator().validate(ctx);
+  const newUser = await User.findOneAndUpdate(
+    {
+      _id: ctx.auth.uid,
+    },
+    {
+      noticeAuth: v.get("body.noticeAuth"),
+    },
+    {
+      returnOriginal: false,
+      projection: {
+        _id: 1,
+        email: 1,
+        nickname: 1,
+        noticeAuth: 1,
+      },
+    }
+  );
+  ctx.body = newUser;
 });
 
 module.exports = router;
