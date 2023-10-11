@@ -118,6 +118,8 @@ router.get("/map", new Auth().check, async (ctx) => {
     } else {
       throw new ParameterException("未匹配到文件");
     }
+  } else {
+    throw new ParameterException("未匹配到文件");
   }
 });
 
