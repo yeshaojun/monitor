@@ -19,10 +19,13 @@
   "homepage": "https://github.com/yeshaojun/koa-service-template#readme",
   "dependencies": {
     "@websee/core": "^4.0.2",
+    "axios": "^1.6.2",
     "bcrypt": "^5.0.1",
     "co-body": "^6.1.0",
+    "crypto-js": "^4.2.0",
     "dayjs": "^1.11.9",
     "fs-extra": "^11.1.1",
+    "js-sha256": "^0.10.1",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",

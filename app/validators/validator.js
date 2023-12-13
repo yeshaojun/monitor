@@ -80,6 +80,13 @@ class CheckErrorIDsValidate extends LinValidator {
   }
 }
 
+class CheckErrorTranslateValidate extends LinValidator {
+  constructor() {
+    super();
+    this.text = new Rule("isLength", "内容不允许为空", { min: 1 });
+  }
+}
+
 function checkId(vals) {
   const id = vals.body.id || vals.path.id || vals.query.id;
   if (!id) {
@@ -105,4 +112,5 @@ module.exports = {
   MapFileValidate,
   CheckErrorIDsValidate,
   LinValidator,
+  CheckErrorTranslateValidate,
 };
