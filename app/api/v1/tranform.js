@@ -19,6 +19,8 @@ router.get("/text", async (ctx) => {
   if (text.length > 20) {
     input = text.substring(0, 10) + text.length + text.slice(-10);
   }
+  const pattern = new RegExp("[\u4E00-\u9FA5]+");
+
   const sign = SHA256(config.appId + input + salt + curtime + config.key);
   const result = await axios({
     url: "https://openapi.youdao.com/api",
@@ -27,8 +29,8 @@ router.get("/text", async (ctx) => {
       q: text,
       appKey: config.appId,
       salt: salt,
-      from: "zh-CHS",
-      to: "en",
+      from: pattern.test(text) ? "zh-CHS" : "en",
+      to: pattern.test(text) ? "en" : "zh-CHS",
       sign: sign,
       signType: "v3",
       curtime: curtime,
